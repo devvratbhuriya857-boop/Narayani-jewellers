@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Cinzel", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --color-gold-50: #FCF9F2;
+  --color-gold-100: #F6EDB6;
+  --color-gold-300: #EAD07C;
+  --color-gold-400: #E3BE4C;
+  --color-gold-500: #D4AF37;
+  --color-gold-600: #B89225;
+  --color-gold-700: #93721B;
+  --color-gold-900: #4B390D;
+}
+
+/* Custom scrollbar to keep layout highly premium */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0a0e;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E3BE4C;
+}
+
+/* Base custom styles */
+body {
+  background-color: #050505;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-editorial {
+  font-family: var(--font-serif);
+}
+
+/* Glowing gold shadows */
+.gold-glow {
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.box-gold-glow {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+/* Subtle background shimmers */
+.shimmer-bg {
+  background: linear-gradient(90deg, rgba(20,13,22,1) 0%, rgba(35,22,38,1) 50%, rgba(20,13,22,1) 100%);
+  background-size: 200% 100%;
+  animation: bgShimmer 6s infinite linear;
+}
+
+@keyframes bgShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

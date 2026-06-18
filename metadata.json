@@ -1,0 +1,6 @@
+{
+  "name": "Narayani Jewellers",
+  "description": "An exquisite multi-million rupee luxury jewelry boutique with interactive 3D hero cards, full mobile responsiveness, live catalogs, sorting, and online VIP consult bookings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
