@@ -13,7 +13,7 @@ interface HeaderProps {
   cartCount: number;
   searchQuery: string;
   onSearchChange: (q: string) => void;
-  onNavigate: (view: "home" | "catalog" | "cart" | "profile" | "book-appointment", category?: string) => void;
+  onNavigate: (view: "home" | "catalog" | "cart" | "profile" | "book-appointment" | "developer-portal", category?: string) => void;
   activeView: string;
 }
 
@@ -277,6 +277,18 @@ export default function Header({
           >
             Book Sikar VIP Slot
           </button>
+
+          <button
+            onClick={() => onNavigate("developer-portal")}
+            className={`py-3 text-xs tracking-wider uppercase font-extrabold transition-all flex items-center gap-1.5 ${
+              activeView === "developer-portal" 
+                ? "text-gold-300 border-b-2 border-gold-400" 
+                : "text-gold-400 hover:text-[#D4AF37]"
+            }`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+            Git & Vercel Code
+          </button>
         </div>
       </nav>
 
@@ -299,11 +311,11 @@ export default function Header({
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 220 }}
-              className="fixed top-0 bottom-0 left-0 w-[285px] sm:w-[320px] bg-[#0A0A0A] border-r border-[#D4AF37]/35 z-50 shadow-2xl p-6 flex flex-col justify-between overflow-y-auto"
+              className="fixed top-0 bottom-0 left-0 w-[285px] sm:w-[320px] bg-[#0A0A0A] border-r border-[#D4AF37]/35 z-50 shadow-2xl flex flex-col h-screen max-h-screen"
             >
-              {/* Drawer Header context */}
-              <div className="space-y-6 font-sans">
-                <div className="flex justify-between items-center pb-4 border-b border-gold-900/20">
+              {/* Drawer Header context (Static) */}
+              <div className="p-6 pb-4 border-b border-gold-900/20 shrink-0 font-sans">
+                <div className="flex justify-between items-center">
                   <div className="flex flex-col">
                     <span className="font-serif text-xl text-white font-extrabold uppercase">Narayani</span>
                     <span className="text-[8px] font-mono tracking-widest text-[#D4AF37] font-bold uppercase -mt-1 block">Luxury Showroom</span>
@@ -312,12 +324,15 @@ export default function Header({
                     type="button"
                     onClick={() => setIsMobileMenuOpen(false)}
                     id="btn-close-hamburger"
-                    className="p-1.5 rounded-full border border-gold-900/20 text-gold-400 hover:text-white"
+                    className="p-1.5 rounded-full border border-gold-900/20 text-gold-400 hover:text-white cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
+              </div>
 
+              {/* Scrollable links + info metrics */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar font-sans">
                 {/* Main links */}
                 <div className="space-y-1.5 text-sm font-semibold">
                   <p className="text-[10px] text-gold-400 uppercase font-bold tracking-widest mb-2.5">Showroom Map & Navigation</p>
@@ -327,7 +342,7 @@ export default function Header({
                       setIsMobileMenuOpen(false);
                       onNavigate("home");
                     }}
-                    className="w-full text-left py-2 px-3 rounded-lg hover:bg-gold-500/10 hover:text-gold-300 text-stone-200 transition-colors flex items-center justify-between"
+                    className="w-full text-left py-2 px-3 rounded-lg hover:bg-gold-500/10 hover:text-gold-300 text-stone-200 transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <span>Home Page</span>
                     <ChevronDown className="w-4 h-4 -rotate-90 text-gold-400/40" />
@@ -338,7 +353,7 @@ export default function Header({
                       setIsMobileMenuOpen(false);
                       onNavigate("catalog", "all");
                     }}
-                    className="w-full text-left py-2 px-3 rounded-lg hover:bg-gold-500/10 hover:text-gold-300 text-stone-200 transition-colors flex items-center justify-between"
+                    className="w-full text-left py-2 px-3 rounded-lg hover:bg-gold-500/10 hover:text-gold-300 text-stone-200 transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <span>All Heritage Jewelry</span>
                     <ChevronDown className="w-4 h-4 -rotate-90 text-gold-400/40" />
@@ -351,7 +366,7 @@ export default function Header({
                         setIsMobileMenuOpen(false);
                         onNavigate("catalog", c.key);
                       }}
-                      className="w-full text-left py-1.5 px-6 rounded hover:text-gold-300 text-stone-400 text-xs hover:bg-stone-900/30 transition-colors flex items-center justify-between"
+                      className="w-full text-left py-1.5 px-6 rounded hover:text-gold-300 text-stone-400 text-xs hover:bg-stone-900/30 transition-colors flex items-center justify-between cursor-pointer"
                     >
                       <span>{c.name} Collection</span>
                       <ArrowRight className="w-3 h-3 text-gold-500/30" />
@@ -363,17 +378,31 @@ export default function Header({
                       setIsMobileMenuOpen(false);
                       onNavigate("book-appointment");
                     }}
-                    className="w-full text-left py-2.5 mt-2 px-3 rounded-lg bg-gold-500/15 text-amber-200 hover:bg-gold-500/20 transition-colors flex items-center justify-between"
+                    className="w-full text-left py-2.5 mt-2 px-3 rounded-lg bg-gold-500/15 text-amber-200 hover:bg-gold-500/20 transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <span className="flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-gold-400" /> Book VIP Appointment
                     </span>
                     <ChevronDown className="w-4 h-4 -rotate-90 text-gold-400" />
                   </button>
+
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      onNavigate("developer-portal");
+                    }}
+                    className="w-full text-left py-2.5 px-3 rounded-lg bg-stone-900 border border-gold-900/30 text-gold-300 hover:bg-stone-800 transition-colors flex items-center justify-between mt-2 cursor-pointer"
+                  >
+                    <span className="flex items-center gap-1.5 font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />
+                      Git & Vercel Code Hub
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-gold-400" />
+                  </button>
                 </div>
 
                 {/* Brand Certify metrics */}
-                <div className="pt-6 border-t border-gold-900/10 space-y-3 font-sans text-xs text-stone-400">
+                <div className="pt-6 border-t border-gold-900/10 space-y-3 text-xs text-stone-400">
                   <p className="text-[10px] text-gold-400 uppercase font-bold tracking-widest">Guarantees</p>
                   <div className="flex items-center gap-2">
                     <Award className="w-4 h-4 text-gold-400" />
@@ -386,8 +415,8 @@ export default function Header({
                 </div>
               </div>
 
-              {/* Bottom Drawer Footer */}
-              <div className="pt-6 border-t border-gold-900/20 text-center font-mono text-[10px] text-gold-500/60 font-medium">
+              {/* Bottom Drawer Footer (Static) */}
+              <div className="p-6 pt-4 border-t border-gold-900/20 text-center font-mono text-[10px] text-gold-500/60 font-medium shrink-0 bg-[#070707]">
                 Royal Narayani Jewellers © 2026
               </div>
             </motion.div>

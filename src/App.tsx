@@ -7,6 +7,7 @@ import ScrollShowcase from "./components/ScrollShowcase";
 import ProductCard, { formatINR } from "./components/ProductCard";
 import DetailsPage from "./components/DetailsPage";
 import AppointmentForm from "./components/AppointmentForm";
+import DeveloperCodeHub from "./components/DeveloperCodeHub";
 import FiltersSidebar from "./components/FiltersSidebar";
 import { PRODUCTS, SHOWROOMS } from "./data";
 import { Product, CartItem, BookingDetails, FilterState } from "./types";
@@ -17,6 +18,24 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 
 export default function App() {
+  // Loading animations state
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isActionLoading, setIsActionLoading] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  function triggerActionLoading() {
+    setIsActionLoading(true);
+    setTimeout(() => {
+      setIsActionLoading(false);
+    }, 550);
+  }
+
   // Navigation states
   const [activeView, setActiveView] = useState<"home" | "catalog" | "cart" | "book-appointment" | "details">("home");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -69,6 +88,7 @@ export default function App() {
 
   // Cart operations
   function handleAddToCart(product: Product, size?: string) {
+    triggerActionLoading();
     const existingIndex = cart.findIndex(item => item.product.id === product.id && item.size === size);
     if (existingIndex > -1) {
       const updated = [...cart];
@@ -81,6 +101,7 @@ export default function App() {
   }
 
   function handleDecrementCart(item: CartItem) {
+    triggerActionLoading();
     const idx = cart.findIndex(c => c.product.id === item.product.id && c.size === item.size);
     if (idx > -1) {
       const updated = [...cart];
@@ -94,12 +115,14 @@ export default function App() {
   }
 
   function handleRemoveCart(item: CartItem) {
+    triggerActionLoading();
     const updated = cart.filter(c => !(c.product.id === item.product.id && c.size === item.size));
     saveCartToStorage(updated);
   }
 
   // Wishlist toggle
   function handleToggleWishlist(product: Product) {
+    triggerActionLoading();
     const existingIndex = wishlist.findIndex(w => w.id === product.id);
     if (existingIndex > -1) {
       const updated = wishlist.filter(w => w.id !== product.id);
@@ -111,7 +134,8 @@ export default function App() {
   }
 
   // Navigation hub
-  function handleNavigate(view: "home" | "catalog" | "cart" | "profile" | "book-appointment", category?: string) {
+  function handleNavigate(view: "home" | "catalog" | "cart" | "profile" | "book-appointment" | "developer-portal", category?: string) {
+    triggerActionLoading();
     if (view === "catalog" && category) {
       // If navigating directly to a metadata category
       setFilters(prev => ({ ...prev, category: category as any }));
@@ -129,6 +153,7 @@ export default function App() {
 
   // Detailed PDP navigation
   function handleProductView(product: Product) {
+    triggerActionLoading();
     setSelectedProduct(product);
     setActiveView("details");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -203,6 +228,117 @@ export default function App() {
   return (
     <div className="min-h-screen text-[#f7e9c1] flex flex-col justify-between selection:bg-gold-500 selection:text-stone-950 pb-16 lg:pb-0">
       
+      {/* Initial Page Load Loader Entrance */}
+      <AnimatePresence>
+        {isInitialLoading && (
+          <motion.div
+            key="initial-royal-loader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+            className="fixed inset-0 bg-[#070503] z-[9999] flex flex-col items-center justify-center text-center px-6 overflow-hidden"
+          >
+            {/* Ambient luxury radial pulse backdrop */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08)_0%,transparent_70%)] pointer-events-none" />
+
+            <div className="relative flex flex-col items-center justify-center max-w-sm w-full space-y-8 select-none">
+              
+              {/* Crown Emblem or circular animated mandala decoration */}
+              <motion.div
+                initial={{ rotate: 0, scale: 0.8, opacity: 0 }}
+                animate={{ rotate: 360, scale: 1, opacity: 1 }}
+                transition={{ 
+                  rotate: { repeat: Infinity, duration: 15, ease: "linear" },
+                  scale: { duration: 1, ease: "easeOut" },
+                  opacity: { duration: 1, ease: "easeOut" }
+                }}
+                className="relative w-28 h-28 flex items-center justify-center rounded-full border border-gold-400/20 shadow-[0_0_50px_rgba(212,175,55,0.05)]"
+              >
+                {/* Inner smaller rotating ring */}
+                <motion.div 
+                  animate={{ rotate: -360 }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                  className="absolute inset-2 rounded-full border border-dashed border-gold-300/30"
+                />
+                {/* Center static Logo icon */}
+                <Sparkles className="w-10 h-10 text-[#D4AF37] animate-pulse" />
+              </motion.div>
+
+              {/* Royal brand names */}
+              <div className="space-y-3">
+                <motion.h1
+                  initial={{ letterSpacing: "0.2em", opacity: 0 }}
+                  animate={{ letterSpacing: "0.41em", opacity: 1 }}
+                  transition={{ duration: 1.4, ease: "easeOut" }}
+                  className="font-serif text-3xl sm:text-4xl text-white font-extrabold uppercase text-transparent bg-clip-text bg-gradient-to-b from-white via-gold-100 to-gold-400"
+                >
+                  NARAYANI
+                </motion.h1>
+                
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                  className="text-[9px] uppercase font-bold tracking-[0.3em] text-[#D4AF37]/80 font-mono"
+                >
+                  Sikar Flagship Boutique • ESTD 1988
+                </motion.p>
+              </div>
+
+              {/* Elegant loading slider progress */}
+              <div className="w-56 space-y-2 mt-4">
+                <div className="h-0.5 w-full bg-stone-900 rounded-full overflow-hidden relative border border-gold-900/10">
+                  <motion.div
+                    initial={{ left: "-100%" }}
+                    animate={{ left: "100%" }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                    className="absolute top-0 bottom-0 w-1/3 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"
+                  />
+                </div>
+                <p className="text-[9px] font-mono tracking-widest text-stone-500 uppercase animate-pulse">
+                  Unlocking royal collections...
+                </p>
+              </div>
+
+              {/* Guarantees watermark at bottom */}
+              <div className="pt-8 text-stone-600 font-serif italic text-[10px] tracking-wide flex items-center gap-1.5 opacity-60">
+                <span>BIS 100% Hallmarked Heritage Jewelry</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Button Click Action Loader */}
+      <AnimatePresence>
+        {isActionLoading && (
+          <>
+            {/* Linear gold glow at very top of screen */}
+            <motion.div
+              initial={{ width: 0, opacity: 1 }}
+              animate={{ width: "100%", opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.55, ease: "easeInOut" }}
+              className="fixed top-0 left-0 h-1 bg-gradient-to-r from-gold-600 via-gold-400 to-amber-200 z-[9999] shadow-[0_1px_10px_rgba(212,175,55,0.8)]"
+            />
+            {/* Center screen luxury radial transition glow */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-stone-950/20 backdrop-blur-[1.5px] z-[9998] pointer-events-auto flex items-center justify-center select-none"
+            >
+              <div className="px-5 py-3.5 bg-stone-950/95 border border-[#D4AF37]/45 rounded-2xl flex flex-col items-center gap-3 text-[10px] font-mono tracking-widest text-gold-300 uppercase shadow-[0_0_50px_rgba(212,175,55,0.15)] max-w-xs text-center border-b-2">
+                <div className="relative w-10 h-10 flex items-center justify-center">
+                  <span className="animate-spin absolute h-6 w-6 rounded-full border-2 border-[#D4AF37] border-t-transparent" />
+                  <Sparkles className="w-4 h-4 text-gold-400 animate-pulse" />
+                </div>
+                <span className="font-bold">Securing Sikar Vault state...</span>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Upper header */}
       <Header
         wishlist={wishlist}
@@ -258,6 +394,7 @@ export default function App() {
                     <button
                       key={chip.value}
                       onClick={() => {
+                        triggerActionLoading();
                         setSelectedCategoryFilter(chip.value);
                         // Make sure search or other filters are kept clean
                       }}
@@ -368,7 +505,10 @@ export default function App() {
                 {categoryChips.map((chip) => (
                   <button
                     key={chip.value}
-                    onClick={() => setSelectedCategoryFilter(chip.value)}
+                    onClick={() => {
+                      triggerActionLoading();
+                      setSelectedCategoryFilter(chip.value);
+                    }}
                     className={`px-4.5 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer transition-all ${
                       selectedCategoryFilter === chip.value
                         ? "bg-gradient-to-r from-gold-600 to-gold-400 text-stone-950 font-bold"
@@ -442,6 +582,19 @@ export default function App() {
               className="max-w-7xl mx-auto px-4 py-8"
             >
               <AppointmentForm onSuccess={handleBookingSuccess} />
+            </motion.div>
+          )}
+
+          {/* DEVELOPER CODE HUB PORTAL */}
+          {activeView === "developer-portal" && (
+            <motion.div
+              key="developer-portal"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="max-w-7xl mx-auto px-2 py-6"
+            >
+              <DeveloperCodeHub />
             </motion.div>
           )}
 
@@ -729,9 +882,18 @@ export default function App() {
 
         </div>
 
-        <div className="max-w-7xl mx-auto border-t border-gold-900/15 text-center mt-6 pt-6 text-[10px] text-stone-600 font-mono flex flex-col sm:flex-row justify-between gap-3">
+        <div className="max-w-7xl mx-auto border-t border-gold-900/15 text-center mt-6 pt-6 text-[10px] text-stone-600 font-mono flex flex-col sm:flex-row justify-between items-center gap-3">
           <span>© 1988-2026 Narayani Jewellers Royal Group Private Limited. All Rights Reserved.</span>
-          <span>Sikar Flagship Registry Lic 332-RAJ-ECOM</span>
+          <div className="flex items-center gap-2">
+            <span>Sikar Flagship Registry Lic 332-RAJ-ECOM</span>
+            <span className="text-stone-800 hidden sm:inline">•</span>
+            <button 
+              onClick={() => handleNavigate("developer-portal")}
+              className="text-[#D4AF37] hover:text-gold-300 font-bold underline cursor-pointer active:scale-95 transition-all py-1 px-2 rounded hover:bg-gold-500/10 text-[10px]"
+            >
+              [ Git & Vercel Deploy Hub ]
+            </button>
+          </div>
         </div>
       </footer>
 

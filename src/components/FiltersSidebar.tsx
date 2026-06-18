@@ -70,20 +70,24 @@ export default function FiltersSidebar({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 26, stiffness: 220 }}
-            className="fixed top-0 bottom-0 right-0 w-[295px] sm:w-[350px] bg-[#0A0A0A] border-l border-[#D4AF37]/35 z-50 p-6 flex flex-col justify-between overflow-y-auto font-sans"
+            className="fixed top-0 bottom-0 right-0 w-[295px] sm:w-[350px] bg-[#0A0A0A] border-l border-[#D4AF37]/35 z-50 flex flex-col h-screen max-h-screen font-sans"
           >
-            <div className="space-y-6">
-              <div className="flex justify-between items-center pb-4 border-b border-gold-900/20">
+            {/* Drawer Header */}
+            <div className="p-6 pb-4 border-b border-gold-900/20 shrink-0">
+              <div className="flex justify-between items-center">
                 <h3 className="font-serif text-lg text-white font-bold uppercase tracking-wide">Refine Collections</h3>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="p-1.5 rounded-full border border-gold-900/20 text-gold-400 hover:text-white"
+                  className="p-1.5 rounded-full border border-gold-900/20 text-gold-400 hover:text-white cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
+            </div>
 
+            {/* Scrollable filters list */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
               {/* Price filter list */}
               <div className="space-y-2.5">
                 <span className="text-[10px] text-gold-400 uppercase font-bold tracking-widest block">Price Range</span>
@@ -146,22 +150,21 @@ export default function FiltersSidebar({
                   ))}
                 </div>
               </div>
-
             </div>
 
             {/* Bottom Actions Reset Filters */}
-            <div className="pt-6 border-t border-gold-900/20 flex gap-3 text-center">
+            <div className="p-6 pt-4 border-t border-gold-900/20 flex gap-3 text-center shrink-0 bg-[#070707]">
               <button
                 onClick={resetFilters}
                 className="flex-1 py-3 border border-stone-800 hover:border-gold-900 text-stone-400 hover:text-white rounded-xl text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
               >
-                Reset All Filters
+                Reset
               </button>
               <button
                 onClick={onClose}
                 className="flex-1 py-3 bg-gradient-to-r from-gold-600 to-gold-400 text-stone-950 font-bold rounded-xl text-xs uppercase tracking-wider cursor-pointer"
               >
-                Apply Filters
+                Apply
               </button>
             </div>
           </motion.div>
